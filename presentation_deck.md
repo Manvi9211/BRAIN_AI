@@ -278,5 +278,5 @@ Three interconnected tools, one unified platform.
 
 <div style="margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap;">
 <span class="pill">🔗 github.com/Manvi9211/BRAIN_AI</span>
-<span class="pill">🌐 chatty-zoos-pick.loca.lt</span>
+<span class="pill">🌐 brain-ai-tau.vercel.app</span>
 </div>
