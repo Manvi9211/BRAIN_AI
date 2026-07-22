@@ -127,6 +127,14 @@ npm run dev
 
 Open the dashboard at the local server URL printed in the terminal.
 
+### Docker
+
+If you prefer a containerized run, use the provided Docker files:
+
+```bash
+docker compose up --build
+```
+
 ---
 
 ## Environment
@@ -218,6 +226,7 @@ These documents feed the retrieval layer, RCA fallback data, compliance context,
 - The UI is intentionally demo-oriented and runs as a browser app served by Express.
 - The copilot is designed to refuse unsupported answers instead of guessing.
 - The RCA and compliance modules include safe fallbacks so the experience still works without live model access.
+- CI and Docker support are included to make the project easier to review and deploy during a hackathon.
 
 ---
 
