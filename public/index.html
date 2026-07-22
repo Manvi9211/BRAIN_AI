@@ -838,6 +838,94 @@ body {
   animation: spin 0.8s linear infinite;
   display: none;
 }
+
+/* ── Document Chunk Inspection Modal ──────── */
+.doc-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(6px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.doc-modal-card {
+  background: #121214;
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--primary);
+  border-radius: 6px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
+  animation: modalSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.doc-modal-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: rgba(18, 18, 20, 0.9);
+}
+.doc-modal-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-bg);
+}
+.doc-modal-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--primary);
+  margin-top: 3px;
+}
+.doc-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--on-surface);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.doc-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.doc-modal-body {
+  padding: 18px;
+  overflow-y: auto;
+  flex: 1;
+}
+.doc-modal-content {
+  font-size: 12.5px;
+  color: #d4e0e0;
+  line-height: 1.65;
+  background: rgba(10, 10, 11, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px;
+  white-space: pre-wrap;
+}
+.citation-chip {
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+}
+.citation-chip:hover {
+  background: rgba(0, 240, 255, 0.18) !important;
+  border-color: var(--primary) !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── Animated background grid lines ──────── */
@@ -1346,6 +1434,23 @@ body {
   <p>Shard: IN-SOUTH-CORE</p>
 </div>
 
+<!-- Document Chunk Inspection Modal -->
+<div id="doc-modal" class="doc-modal-backdrop" style="display:none;" onclick="if(event.target===this)closeDocModal()">
+  <div class="doc-modal-card">
+    <div class="doc-modal-header">
+      <div>
+        <div class="doc-modal-title" id="modal-doc-title">Document Title</div>
+        <div class="doc-modal-subtitle" id="modal-doc-id">DOC_ID</div>
+      </div>
+      <button class="doc-modal-close" onclick="closeDocModal()">✕</button>
+    </div>
+    <div class="doc-modal-body">
+      <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--primary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em;" id="modal-meta-tag">GROUNDED VERIFIED PARAGRAPH EVIDENCE</div>
+      <div id="modal-doc-content" class="doc-modal-content">Content</div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════
      SCRIPTS
 ═══════════════════════════════════════════ -->
@@ -1540,10 +1645,56 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 })();
 
 
-/* ── Copilot ──────────────────────────────── */
+/* ── Copilot & Document Chunk Inspection Modal ── */
+let lastRetrievedChunks = [];
+
 function fillQuery(text) {
   document.getElementById('copilot-input').value = text;
   showTab('copilot');
+}
+
+function openDocModal(docId, highlightText = '') {
+  const modal = document.getElementById('doc-modal');
+  const titleEl = document.getElementById('modal-doc-title');
+  const idEl = document.getElementById('modal-doc-id');
+  const metaEl = document.getElementById('modal-meta-tag');
+  const contentEl = document.getElementById('modal-doc-content');
+
+  if (!modal) return;
+
+  // Search in last retrieved chunks from copilot API response
+  const match = lastRetrievedChunks.find(c => c.doc_id === docId);
+
+  if (match) {
+    titleEl.textContent = match.title || docId;
+    const pIdx = match.paraIndex !== undefined ? match.paraIndex : (match.index !== undefined ? match.index : '1');
+    idEl.textContent = `DOCUMENT ID: ${match.doc_id} · PARAGRAPH ${pIdx}`;
+    metaEl.textContent = `MATCH SCORE: ${(match.score || 0).toFixed(4)} · VERIFIED GROUNDED CHUNK EVIDENCE`;
+    
+    let bodyHtml = match.text || '';
+    if (highlightText && highlightText.trim()) {
+      const escaped = highlightText.trim().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const reg = new RegExp(`(${escaped})`, 'gi');
+      bodyHtml = bodyHtml.replace(reg, '<mark style="background:#EAC324;color:#000;padding:2px 5px;border-radius:3px;font-weight:600;">$1</mark>');
+    }
+    contentEl.innerHTML = bodyHtml;
+  } else {
+    titleEl.textContent = `Document Reference: ${docId}`;
+    idEl.textContent = `DOCUMENT ID: ${docId}`;
+    metaEl.textContent = `REFERENCED IN AI RESPONSE`;
+    let fallbackText = highlightText ? `Referenced excerpt quote:\n\n"${highlightText}"` : `Document '${docId}' referenced in AI answer.`;
+    if (highlightText) {
+      fallbackText = `<mark style="background:#EAC324;color:#000;padding:2px 5px;border-radius:3px;font-weight:600;">"${highlightText}"</mark>`;
+    }
+    contentEl.innerHTML = fallbackText;
+  }
+
+  modal.style.display = 'flex';
+}
+
+function closeDocModal() {
+  const modal = document.getElementById('doc-modal');
+  if (modal) modal.style.display = 'none';
 }
 
 function appendMsg(role, html, citations) {
@@ -1552,16 +1703,30 @@ function appendMsg(role, html, citations) {
   div.className = 'msg ' + role;
   const avatar = role === 'user' ? 'YOU' : '🧠';
   const roleLabel = role === 'user' ? 'OPERATOR_01' : 'BRAIN AI';
+  
+  // Format [doc_id] in text into clickable interactive citations
+  let formattedHtml = html;
+  if (role === 'ai') {
+    formattedHtml = formattedHtml.replace(/\[([a-zA-Z0-9_-]+)\]/g, (match, docId) => {
+      return `<span class="citation-chip" onclick="openDocModal('${docId}')">📄 [${docId}]</span>`;
+    });
+  }
+
   let citeHtml = '';
   if (citations && citations.length) {
-    citeHtml = citations.map(c => `<span class="citation-chip">📄 ${c.doc_id}</span>`).join('');
-    citeHtml = `<div style="margin-top:8px">${citeHtml}</div>`;
+    citeHtml = citations.map(c => {
+      const excEscaped = (c.excerpt || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const label = c.excerpt ? `📄 ${c.doc_id} — "${c.excerpt.substring(0, 35)}..."` : `📄 ${c.doc_id}`;
+      return `<span class="citation-chip" onclick="openDocModal('${c.doc_id}', '${excEscaped}')">${label}</span>`;
+    }).join(' ');
+    citeHtml = `<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">${citeHtml}</div>`;
   }
+
   div.innerHTML = `
     <div class="msg-avatar">${avatar}</div>
     <div class="msg-body">
       <div class="msg-role">${roleLabel}</div>
-      <div class="msg-text">${html}${citeHtml}</div>
+      <div class="msg-text">${formattedHtml}${citeHtml}</div>
     </div>`;
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
@@ -1590,6 +1755,10 @@ async function sendCopilot() {
     });
     const d = await r.json();
     thinking.remove();
+
+    if (d.retrievedChunks && d.retrievedChunks.length) {
+      lastRetrievedChunks = d.retrievedChunks;
+    }
 
     let confBadge = '';
     if (d.confidence !== undefined) {
