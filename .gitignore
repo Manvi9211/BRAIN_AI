@@ -28,3 +28,17 @@ Thumbs.db
 # Temporary / extracted files
 stitch_bespoke_ui_design_overhaul/
 *.zip
+
+# Generated presentation & report files (too large for git)
+BRAIN_AI_Presentation.pptx
+BRAIN_AI_Slides.pdf
+presentation.pdf
+presentation.pptx
+detailed_report.html
+generate_report.js
+encode_images.ps1
+architecture.mmd
+assets/screenshots/*_b64.txt
+
+# Python venv
+.venv/
