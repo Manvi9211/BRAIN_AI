@@ -5,16 +5,22 @@ function runTest(query) {
   console.log(`QUERY: "${query}"`);
   console.log(`========================================`);
 
-  const { retrievedChunks, confidenceScore } = retrieve(query, 3, 0.05);
+  const retrievedChunks = retrieve(query, 3, 0.05);
+  const confidenceScore = Math.min(100, Math.round(((retrievedChunks[0]?.score || 0) * 20)));
 
   console.log(`CONFIDENCE SCORE: ${confidenceScore}%`);
   console.log(`RETRIEVED CHUNKS: ${retrievedChunks.length}\n`);
+
+  if (retrievedChunks.length === 0) {
+    console.log('No chunks cleared the retrieval threshold.');
+    return;
+  }
 
   retrievedChunks.forEach((chunk, index) => {
     console.log(`[#${index + 1}] Source: ${chunk.title} (${chunk.doc_id})`);
     console.log(`     Index: Paragraph ${chunk.index} | Match Score: ${chunk.score.toFixed(4)}`);
     console.log(`     Snippet: "${chunk.text.substring(0, 150)}..."`);
-    console.log(`     Tags: [${chunk.tags.join(', ')}]`);
+    console.log(`     Tags: [${(chunk.tags || []).join(', ')}]`);
     console.log(`----------------------------------------`);
   });
 }

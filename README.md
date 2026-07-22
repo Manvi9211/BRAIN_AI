@@ -79,6 +79,45 @@ graph TD
 
 ---
 
+## Screenshots
+
+The following screenshots show the current interface of the project:
+
+<table>
+  <tr>
+    <td>
+      <strong>Overview Dashboard</strong><br>
+      <img src="assets/screenshots/overview.png" alt="Overview Dashboard" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong>Grounded RAG Copilot</strong><br>
+      <img src="assets/screenshots/copilot.png" alt="Grounded RAG Copilot" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong>Knowledge Graph Explorer</strong><br>
+      <img src="assets/screenshots/graph.png" alt="Knowledge Graph Explorer" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong>RCA Workbench</strong><br>
+      <img src="assets/screenshots/rca.png" alt="RCA Workbench" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong>OISD-STD-189 Safety Compliance Audit</strong><br>
+      <img src="assets/screenshots/compliance.png" alt="OISD-STD-189 Safety Compliance Audit" width="100%">
+    </td>
+  </tr>
+</table>
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
