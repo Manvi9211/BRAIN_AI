@@ -1,0 +1,34 @@
+---
+doc_id: b401_sop
+title: Standard Operating Procedure - Boiler B-401
+type: procedure
+tags: [B-401, boiler, steam, startup, shutdown]
+---
+Standard Operating Procedure (SOP) for Boiler B-401 (High Pressure Steam Generator).
+Document Ref: SOP-OPS-B401-04
+Revision: 3
+
+1. Pre-Start Checklist:
+Before starting Boiler B-401, verify the following conditions:
+- Ensure the feedwater tank level is at 75% capacity.
+- Confirm the main fuel gas block valve is closed and vent valves are open to vent any accumulated gas.
+- Run the combustion air blower for at least 5 minutes to purge the furnace cavity. This prevents combustion chamber explosions due to pocketed gases.
+- Verify that steam drum level control valve (LCV-401) is functioning in manual mode.
+
+2. Boiler Startup Sequence:
+- Open the feedwater inlet valve and fill the steam drum until the level reaches the 50% mark.
+- Start the forced draft fan (FD-401) and adjust the purge air flow to 100%. Purge for 5 minutes.
+- Reduce air flow to the minimum ignition position (30%).
+- Initiate the pilot gas flow. Press the spark igniter button. Confirm flame presence within 10 seconds through the inspection peephole or UV scanner.
+- If pilot flame fails to ignite, immediately shut off the pilot gas, purge the furnace for 10 minutes, and repeat. Do not retry ignition without purging.
+- Once the pilot is established, slowly open the main fuel gas control valve and set the furnace heat ramp-up rate at 5°C per minute to prevent thermal shock to the tubes.
+- Monitor the drum pressure. Close the drum vent valve when the pressure reaches 1.5 kg/cm².
+
+3. Normal Operation & Limits:
+- Normal operating pressure: 42.0 kg/cm²
+- Maximum design pressure: 48.0 kg/cm²
+- Operating steam drum level: 45% to 55%
+- High level alarm: 65% (risk of liquid carryover to steam turbine)
+- Low level alarm: 35%
+- Low-low level trip: 25% (requires immediate trip of fuel supply to avoid dry run tube rupture)
+- Feedwater temperature: 105°C minimum (to prevent thermal fatigue in the drum)

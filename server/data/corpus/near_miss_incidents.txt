@@ -1,0 +1,24 @@
+---
+doc_id: near_miss_incidents
+title: Incident Report - Boiler Fuel Gas Surge
+type: incident
+tags: [incident, B-401, safety, fuel, pressure, near-miss]
+---
+Safety Incident and Near-Miss Investigation Report.
+Incident Date: 2026-07-02
+Report Date: 2026-07-04
+Location: Utility Block 2, Boiler Area B-401
+Incident Type: Fuel Gas Header Pressure Surge / Burner Flameout Risk
+
+1. Narrative of Events:
+At 14:15 hrs on 2026-07-02, the fuel gas header pressure supplying Boiler B-401 suddenly surged from the normal 3.2 kg/cm² to 5.8 kg/cm² within 15 seconds. This surge triggered the high-pressure alarm on pressure transmitter PT-402. The operating technician immediately noted heavy burner sputtering and fluctuation.
+Before the low-water trip or flame fail safety logic could react, the panel operator manually tripped the boiler fuel shutoff valve (SOV-401) to isolate the furnace and prevent a burner blowout or fire surge. Boiler steam output dropped to zero, resulting in a temporary plant header pressure dip.
+
+2. Root Cause Analysis:
+Investigation revealed that the main fuel gas pressure regulating valve (PRV-802) upstream of the utility block had failed. The PRV diaphragm had ruptured due to moisture collection and freezing in the instrument air supply line, locking the regulator in the 90% open position.
+Additionally, the solenoid valve SOV-401 had a slight delay in closing (recorded at 2.8 seconds), which luckily did not lead to safety issues as manual isolation was completed rapidly.
+
+3. Corrective and Preventive Actions (CAPA):
+- Install a dual instrument air dryer system to prevent moisture accumulation in critical pressure control valves.
+- Implement monthly testing of all safety shutoff valves (solenoids) to ensure actuation times remain under 2.0 seconds.
+- Revise startup SOP for B-401 to check gas PRV calibration prior to lighting the pilot burner.

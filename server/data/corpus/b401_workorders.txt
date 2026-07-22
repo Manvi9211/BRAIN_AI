@@ -1,0 +1,31 @@
+---
+doc_id: b401_workorders
+title: Work Order Log - Boiler B-401
+type: log
+tags: [B-401, boiler, maintenance, workorders, leak, steam]
+---
+Maintenance History and Work Order Log for Boiler B-401.
+
+Entry 1:
+- Work Order ID: WO-2025-1104
+- Date: 2025-11-04
+- Description: Feedwater control valve LCV-401 hunting.
+- Action Taken: Actuator diaphragm of LCV-401 was found leaking. Replaced diaphragm and recalibrated the valve positioner. Valve performance tested and found normal.
+
+Entry 2:
+- Work Order ID: WO-2026-0318
+- Date: 2026-03-18
+- Description: Minor steam leak reported at superheater outlet header weld joint.
+- Action Taken: Boiler depressurized and cooled. Ultrasonic testing (UT) revealed a 12mm cracks near weld seam of tube SH-12. Ground weld joint and re-welded using Alloy Steel filler rod. Post-weld heat treatment (PWHT) completed. Hydro-tested at 60 kg/cm²; no leak observed.
+
+Entry 3:
+- Work Order ID: WO-2026-0628
+- Date: 2026-06-28
+- Description: Drum level gauge glass replacement due to cloudiness.
+- Action Taken: Isolated level gauge glass LG-401. Replaced mica shield and high-pressure silicate glass window. Recommissioned gauge glass. Confirmed zero leakage under operating pressure of 42 kg/cm².
+
+Entry 4:
+- Work Order ID: WO-2026-07-15
+- Date: 2026-07-15
+- Description: Fuel gas control valve fail-safe test.
+- Action Taken: Checked solenoid valve SOV-401 on the fuel line shutoff loop. Actuation time was slightly high (2.8 seconds; standard is under 2.0 seconds). Flushed solenoid air exhaust port and tested again. Response time improved to 1.6 seconds.

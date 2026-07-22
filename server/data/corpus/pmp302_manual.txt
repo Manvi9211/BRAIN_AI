@@ -1,0 +1,27 @@
+---
+doc_id: pmp302_manual
+title: OEM Manual - Centrifugal Pump PMP-302
+type: manual
+tags: [PMP-302, pump, centrifugal, seal, bearing]
+---
+Centrifugal Pump Model PMP-302 Operating Manual and Specifications.
+Manufacturer: Heavy Flow Engineering Ltd.
+Designation: Centrifugal pump designed for process liquid transfer at high pressures.
+
+1. Technical Specifications:
+- Design Flow Rate: 120 m³/hr
+- Design Head: 85 meters
+- Rated Speed: 2900 RPM
+- Impeller Diameter: 250 mm
+- Maximum Working Pressure: 15.0 kg/cm²
+- Maximum Process Temperature: 180°C
+
+2. Mechanical Seal System:
+The PMP-302 is equipped with an API Plan 11/52 tandem mechanical seal system. API Plan 11 routes fluid from the pump discharge through an orifice to the seal chamber to provide cooling. API Plan 52 uses an external unpressurized buffer fluid reservoir to contain any seal leakage. The buffer fluid level must be checked weekly. If the buffer fluid level drops rapidly, it indicates a failure of the primary mechanical seal.
+The maximum allowable seal face temperature is 120°C. High temperature in the seal chamber usually indicates insufficient flow through the Plan 11 bypass line, caused by a clogged orifice or strainer.
+
+3. Radial and Thrust Bearings:
+Lubricant Type: ISO VG 68 turbine oil.
+Sump Capacity: 1.2 Liters.
+Vibration Limit: The pump vibration should not exceed 4.5 mm/s (RMS) under normal operating conditions. High vibration exceeding 6.2 mm/s requires immediate shutdown. Normal bearing operating temperature is 65°C, with a maximum alarm threshold at 85°C. Bearing failure is typically preceded by oil contamination (water or metal filings) or running dry due to oil leakages.
+Check for oil contamination during quarterly shutdowns. Ensure oil level is maintained at the center of the sight glass.

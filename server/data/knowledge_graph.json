@@ -1,0 +1,161 @@
+{
+  "nodes": [
+    {
+      "id": "pmp-302",
+      "label": "Pump PMP-302",
+      "type": "Equipment"
+    },
+    {
+      "id": "b-401",
+      "label": "Boiler B-401",
+      "type": "Equipment"
+    },
+    {
+      "id": "c-102",
+      "label": "Compressor C-102",
+      "type": "Equipment"
+    },
+    {
+      "id": "oisd-std-189",
+      "label": "OISD-STD-189 (Safety Standard)",
+      "type": "Standard"
+    },
+    {
+      "id": "pmp302_manual",
+      "label": "OEM Manual - PMP-302",
+      "type": "Document"
+    },
+    {
+      "id": "b401_sop",
+      "label": "SOP - Boiler B-401",
+      "type": "Procedure"
+    },
+    {
+      "id": "c102_inspection",
+      "label": "Inspection Record - C-102",
+      "type": "Document"
+    },
+    {
+      "id": "pmp302_workorders",
+      "label": "Work Orders - PMP-302",
+      "type": "Document"
+    },
+    {
+      "id": "b401_workorders",
+      "label": "Work Orders - B-401",
+      "type": "Document"
+    },
+    {
+      "id": "near_miss_incidents",
+      "label": "Incident Report - Gas Surge",
+      "type": "Document"
+    },
+    {
+      "id": "r-k-sen",
+      "label": "R. K. Sen (Integrity Specialist)",
+      "type": "Person"
+    },
+    {
+      "id": "deluge-valves",
+      "label": "Deluge Valves",
+      "type": "Equipment"
+    },
+    {
+      "id": "lcv-401",
+      "label": "Level Control Valve LCV-401",
+      "type": "Equipment"
+    },
+    {
+      "id": "sov-401",
+      "label": "Solenoid Shutoff Valve SOV-401",
+      "type": "Equipment"
+    },
+    {
+      "id": "prv-802",
+      "label": "Pressure Regulating Valve PRV-802",
+      "type": "Equipment"
+    },
+    {
+      "id": "pmp302-seizure",
+      "label": "PMP-302 Shaft/Bearing Seizure",
+      "type": "Incident"
+    },
+    {
+      "id": "b401-gas-surge",
+      "label": "B-401 Fuel Gas Pressure Surge",
+      "type": "Incident"
+    }
+  ],
+  "edges": [
+    {
+      "source": "pmp302_manual",
+      "target": "pmp-302",
+      "relation": "mentions"
+    },
+    {
+      "source": "b401_sop",
+      "target": "b-401",
+      "relation": "mentions"
+    },
+    {
+      "source": "c102_inspection",
+      "target": "c-102",
+      "relation": "mentions"
+    },
+    {
+      "source": "c102_inspection",
+      "target": "r-k-sen",
+      "relation": "conducted_by"
+    },
+    {
+      "source": "pmp302_workorders",
+      "target": "pmp-302",
+      "relation": "mentions"
+    },
+    {
+      "source": "pmp302_workorders",
+      "target": "pmp302-seizure",
+      "relation": "logs_incident"
+    },
+    {
+      "source": "b401_workorders",
+      "target": "b-401",
+      "relation": "mentions"
+    },
+    {
+      "source": "b401_workorders",
+      "target": "lcv-401",
+      "relation": "mentions"
+    },
+    {
+      "source": "near_miss_incidents",
+      "target": "b-401",
+      "relation": "mentions"
+    },
+    {
+      "source": "near_miss_incidents",
+      "target": "b401-gas-surge",
+      "relation": "logs_incident"
+    },
+    {
+      "source": "near_miss_incidents",
+      "target": "sov-401",
+      "relation": "mentions"
+    },
+    {
+      "source": "near_miss_incidents",
+      "target": "prv-802",
+      "relation": "mentions"
+    },
+    {
+      "source": "oisd-std-189",
+      "target": "pmp-302",
+      "relation": "governs"
+    },
+    {
+      "source": "oisd-std-189",
+      "target": "deluge-valves",
+      "relation": "governs"
+    }
+  ]
+}

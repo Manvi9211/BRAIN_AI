@@ -1,0 +1,33 @@
+---
+doc_id: c102_inspection
+title: Inspection Record - Compressor C-102
+type: inspection
+tags: [C-102, compressor, vibration, seal, gas, piping]
+---
+Compressor C-102 Mechanical Integrity Inspection Record.
+Inspection Date: 2026-05-14
+Inspector: R. K. Sen, Lead Integrity Specialist
+
+1. Equipment Overview:
+Tag: C-102 (Centrifugal Recycle Gas Compressor)
+Process Fluid: Hydrogen-rich Recycle Gas
+Last Inspection Date: 2025-05-12
+
+2. Visual Inspection and Findings:
+- Piping and Supports: Minor paint peeling on the suction piping elbow. No active corrosion observed. Support anchors are secure.
+- Foundation: Epoxy grout has developed minor hairline cracks at the non-drive end soleplate. No loose foundation bolts detected. Recommendation: Apply sealant during next shutdown to prevent moisture ingress.
+- Seal Oil System: Dry gas seal panel (DGS-102) pressure regulator is operating stable. However, secondary seal vent flow rate is slightly elevated at 18 SLPM (normal is 5-10 SLPM). This indicates potential primary seal degradation. Monitor daily.
+
+3. Vibration Analysis:
+Vibration readings were taken at the drive-end and non-drive-end bearings of both the compressor and the driving motor:
+- Motor DE Bearing (Horizontal): 1.8 mm/s
+- Compressor DE Bearing (Horizontal): 3.2 mm/s
+- Compressor NDE Bearing (Horizontal): 5.1 mm/s (Alarm limit: 4.5 mm/s, Trip limit: 7.0 mm/s)
+- Analysis: High vibration at Compressor NDE is dominated by a 1x RPM frequency peak, suggesting rotor unbalance or slight coupling misalignment.
+
+4. Oil Analysis:
+Oil sample taken from the main lube oil reservoir (Lube Oil Tank LOT-102):
+- Water Content: 120 ppm (Limit: 200 ppm)
+- Viscosity: 44 cSt @ 40°C (ISO VG 46 specification)
+- Wear Metal Count: Fe: 8 ppm, Cu: 12 ppm (Cu count is elevated, indicating possible brass cage wear in the bearings).
+Action Item: Schedule a shaft alignment check and bearing inspection during the July shutdown. Replace coupling spacer.

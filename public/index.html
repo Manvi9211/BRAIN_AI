@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRAIN AI — Industrial Knowledge Intelligence Platform</title>
+  <meta name="description" content="AI-powered Industrial Knowledge Intelligence Platform — Hallucination-Gated RAG, Knowledge Graph, Root Cause Analysis, OISD Compliance Audit.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Three.js for hero animation -->
+  <script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+
+<style>
+/* ═══════════════════════════════════════════
+   OBSIDIAN COMMAND DESIGN SYSTEM
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:            #0A0A0B;
+  --surface-1:     #121214;
+  --surface-2:     #1C1C1E;
+  --surface-3:     #262628;
+  --border:        #262626;
+  --border-hover:  #3F3F46;
+  --on-bg:         #E5E2E3;
+  --on-surface:    #B9CACB;
+  --primary:       #00F0FF;
+  --primary-dim:   #00DBE9;
+  --primary-glow:  rgba(0,240,255,0.15);
+  --emerald:       #4EDEA3;
+  --amber:         #EAC324;
+  --error:         #FFB4AB;
+  --error-dim:     #FF4545;
+  --outline:       #3B494B;
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--on-bg);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #3B494B; border-radius: 2px; }
+
+/* ── Layout Shell ─────────────────────────── */
+.shell { display: flex; height: 100vh; overflow: hidden; }
+
+/* ── Sidebar ──────────────────────────────── */
+.sidebar {
+  width: 224px;
+  flex-shrink: 0;
+  background: rgba(18,18,20,0.9);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  gap: 4px;
+  z-index: 100;
+}
+
+/* Logo / Brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+/* Custom SVG Logo — Nexus Eye */
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(0,240,255,0.6));
+}
+
+.brand-text h1 {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  line-height: 1;
+}
+.brand-text p {
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(0,219,233,0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Nav Items */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--on-surface);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.nav-item:hover { background: rgba(255,255,255,0.05); color: var(--on-bg); }
+.nav-item.active {
+  background: rgba(0,240,255,0.08);
+  color: var(--primary-dim);
+  border: 1px solid rgba(0,240,255,0.2);
+  box-shadow: 0 0 12px rgba(0,240,255,0.12);
+}
+.nav-item svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+.nav-section-label {
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--outline);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 12px 10px 4px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 4px;
+}
+.operator-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 6px var(--emerald);
+  flex-shrink: 0;
+}
+.operator-info p { font-size: 11px; font-weight: 700; color: var(--on-bg); }
+.operator-info span { font-size: 9px; font-family: 'JetBrains Mono', monospace; color: rgba(78,222,163,0.6); }
+
+/* ── Main Content ─────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 52px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,10,11,0.6);
+  backdrop-filter: blur(12px);
+  flex-shrink: 0;
+  z-index: 50;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-crumb {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.topbar-crumb span { color: var(--primary-dim); }
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.status-chip.online {
+  background: rgba(78,222,163,0.1);
+  color: var(--emerald);
+  border: 1px solid rgba(78,222,163,0.3);
+}
+.status-led {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor;
+  animation: led-pulse 2s infinite;
+}
+@keyframes led-pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--on-surface);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.icon-btn:hover { border-color: var(--border-hover); color: var(--on-bg); }
+.icon-btn svg { width: 14px; height: 14px; fill: currentColor; }
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+}
+.search-bar svg { width: 12px; height: 12px; fill: var(--on-surface); flex-shrink: 0; }
+.search-bar input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--on-bg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  width: 160px;
+}
+.search-bar input::placeholder { color: var(--on-surface); }
+
+/* Tab Pages */
+.tab-content { display: none; flex: 1; overflow: hidden; }
+.tab-content.active { display: flex; flex-direction: column; overflow: hidden; }
+.page-scroll { flex: 1; overflow-y: auto; padding: 20px; }
+
+/* ── Glass Card ───────────────────────────── */
+.glass {
+  background: rgba(28,28,30,0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.glass:hover { border-color: var(--border-hover); }
+
+/* ── HERO SECTION ─────────────────────────── */
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  height: 360px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* WebGL shader background */
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+}
+
+/* Three.js brain on right */
+#hero-threejs {
+  position: absolute;
+  right: 0; top: 0;
+  width: 55%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Gradient fade over 3D */
+.hero-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10,10,11,0.95) 35%, rgba(10,10,11,0.1) 70%, transparent);
+  pointer-events: none;
+}
+.hero-fade-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 80px;
+  background: linear-gradient(to top, var(--bg), transparent);
+  pointer-events: none;
+}
+
+/* Hero content */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  padding: 40px;
+  max-width: 540px;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(0,240,255,0.08);
+  border: 1px solid rgba(0,240,255,0.25);
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+.hero-tag .led { width: 5px; height: 5px; border-radius: 50%; background: var(--primary); animation: led-pulse 1.5s infinite; }
+.hero-tag span { font-size: 9px; font-family: 'JetBrains Mono', monospace; color: var(--primary-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+
+.hero-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dim) 50%, #7df4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: 13px;
+  color: var(--on-surface);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  max-width: 420px;
+}
+
+.hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background: var(--primary);
+  color: #0A0A0B;
+  border: none;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: #7df4ff; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,240,255,0.3); }
+.btn-primary svg { width: 13px; height: 13px; fill: currentColor; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background: rgba(255,255,255,0.04);
+  color: var(--on-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); }
+.btn-ghost svg { width: 13px; height: 13px; fill: currentColor; }
+
+/* ── KPI Metric Cards ─────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.kpi-card {
+  background: rgba(28,28,30,0.7);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+}
+.kpi-card.cyan::before { background: var(--primary); box-shadow: 0 0 8px var(--primary); }
+.kpi-card.emerald::before { background: var(--emerald); }
+.kpi-card.amber::before { background: var(--amber); }
+.kpi-card.error::before { background: var(--error-dim); }
+
+.kpi-label {
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.kpi-value {
+  font-size: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.kpi-card.cyan .kpi-value { color: var(--primary); }
+.kpi-card.emerald .kpi-value { color: var(--emerald); }
+.kpi-card.amber .kpi-value { color: var(--amber); }
+.kpi-card.error .kpi-value { color: var(--error-dim); }
+
+.kpi-bar { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
+.kpi-bar-fill { height: 100%; border-radius: 1px; }
+.kpi-card.cyan .kpi-bar-fill { background: var(--primary); }
+.kpi-card.emerald .kpi-bar-fill { background: var(--emerald); }
+.kpi-card.amber .kpi-bar-fill { background: var(--amber); }
+.kpi-card.error .kpi-bar-fill { background: var(--error-dim); }
+
+/* ── Two-Column Grid ──────────────────────── */
+.col-grid { display: grid; gap: 16px; }
+.col-grid-2 { grid-template-columns: 1fr 1fr; }
+.col-grid-5-7 { grid-template-columns: 5fr 7fr; }
+
+/* ── Section Card ─────────────────────────── */
+.section-card {
+  background: rgba(28,28,30,0.7);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-bg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title svg { width: 14px; height: 14px; fill: var(--primary-dim); }
+.section-body { padding: 16px; }
+
+/* ── Terminal ─────────────────────────────── */
+.terminal {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.terminal-bar {
+  background: var(--surface-1);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.terminal-dot { width: 7px; height: 7px; border-radius: 50%; }
+.terminal-label {
+  margin-left: auto;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.terminal-body {
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  overflow-y: auto;
+  flex: 1;
+  line-height: 1.7;
+}
+.t-cyan { color: var(--primary-dim); }
+.t-green { color: var(--emerald); }
+.t-amber { color: var(--amber); }
+.t-red { color: var(--error-dim); }
+.t-dim { color: var(--on-surface); }
+
+/* ── Table ────────────────────────────────── */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  background: var(--surface-1);
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 500;
+}
+.data-table td {
+  padding: 9px 12px;
+  font-size: 11px;
+  border-bottom: 1px solid rgba(38,38,38,0.5);
+}
+.data-table tbody tr:hover { background: rgba(0,240,255,0.03); }
+.data-table .id-cell { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--primary-dim); }
+.data-table .dim { color: var(--on-surface); }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 9px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.badge.online  { background: rgba(78,222,163,0.1); color: var(--emerald); border: 1px solid rgba(78,222,163,0.3); }
+.badge.warning { background: rgba(234,195,36,0.1); color: var(--amber); border: 1px solid rgba(234,195,36,0.3); }
+.badge.critical{ background: rgba(255,69,69,0.1); color: var(--error-dim); border: 1px solid rgba(255,69,69,0.3); box-shadow: 0 0 6px rgba(255,69,69,0.2); }
+.badge.pass    { background: rgba(78,222,163,0.1); color: var(--emerald); border: 1px solid rgba(78,222,163,0.3); }
+.badge.fail    { background: rgba(255,69,69,0.1); color: var(--error-dim); border: 1px solid rgba(255,69,69,0.3); }
+
+.integrity-bar { display: flex; align-items: center; gap: 6px; }
+.integrity-track { width: 60px; height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
+.integrity-fill { height: 100%; border-radius: 1px; }
+
+/* ── Copilot Tab ──────────────────────────── */
+.copilot-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 16px;
+  height: 100%;
+  padding: 20px;
+  overflow: hidden;
+}
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  background: rgba(28,28,30,0.7);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.chat-input-area {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.chat-input {
+  flex: 1;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 14px;
+  color: var(--on-bg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  max-height: 120px;
+}
+.chat-input:focus { border-color: var(--primary-dim); }
+.chat-input::placeholder { color: var(--on-surface); }
+
+.msg { display: flex; gap: 10px; }
+.msg-avatar {
+  width: 28px; height: 28px; border-radius: 2px;
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+}
+.msg.user .msg-avatar { background: rgba(0,240,255,0.1); color: var(--primary); border: 1px solid rgba(0,240,255,0.2); }
+.msg.ai   .msg-avatar { background: rgba(78,222,163,0.1); color: var(--emerald); border: 1px solid rgba(78,222,163,0.2); }
+.msg-body { flex: 1; }
+.msg-role { font-size: 9px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--on-surface); margin-bottom: 4px; }
+.msg-text {
+  background: rgba(18,18,20,0.8);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--on-bg);
+}
+.msg.ai .msg-text { border-left: 2px solid var(--emerald); }
+.msg.user .msg-text { border-left: 2px solid var(--primary-dim); }
+
+.citation-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 6px;
+  padding: 2px 8px;
+  background: rgba(0,219,233,0.06);
+  border: 1px solid rgba(0,219,233,0.2);
+  border-radius: 2px;
+  font-size: 9px; font-family: 'JetBrains Mono', monospace;
+  color: var(--primary-dim);
+  margin-right: 4px;
+}
+
+.context-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.sample-q {
+  display: block;
+  width: 100%;
+  background: rgba(18,18,20,0.8);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--on-surface);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sample-q:hover { border-color: var(--primary-dim); color: var(--on-bg); background: rgba(0,240,255,0.05); }
+
+/* ── Graph Tab ────────────────────────────── */
+#graph-mount {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(10,10,11,0.8);
+  position: relative;
+  overflow: hidden;
+}
+#cy { width: 100%; height: 100%; }
+
+/* ── RCA Tab ──────────────────────────────── */
+.rca-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; height: 100%; padding: 20px; overflow: hidden; }
+.rca-input-panel { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+.rca-results { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+.rca-textarea {
+  width: 100%; height: 120px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px;
+  color: var(--on-bg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  resize: none;
+  outline: none;
+}
+.rca-textarea:focus { border-color: var(--primary-dim); }
+
+.why-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  background: rgba(18,18,20,0.8);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  border-left: 2px solid var(--primary-dim);
+}
+.why-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--primary-dim); font-weight: 700; flex-shrink: 0; width: 36px; }
+.why-text { font-size: 12px; color: var(--on-bg); line-height: 1.5; }
+
+/* ── Fishbone diagram — Vector SVG Architecture ── */
+.fb-head-box {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1.5px solid rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  text-align: center;
+}
+.fb-head-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 800;
+  color: #00F0FF;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.fb-head-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #E5E2E3;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fb-card-html {
+  width: 100%;
+  height: 100%;
+  background: rgba(18, 18, 20, 0.95);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.fb-card-html:hover {
+  border-color: rgba(255,255,255,0.3);
+  transform: translateY(-1px);
+}
+.fb-card-hdr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.fb-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  flex: 1;
+}
+.fb-card-item {
+  font-size: 11px;
+  color: #c4d0d0;
+  line-height: 1.4;
+  padding-left: 12px;
+  position: relative;
+}
+.fb-card-item::before {
+  content: '•';
+  position: absolute;
+  left: 2px;
+  top: 0;
+  color: currentColor;
+  opacity: 0.7;
+}
+
+/* ── Compliance Tab ───────────────────────── */
+.compliance-layout { display: flex; flex-direction: column; height: 100%; padding: 20px; gap: 16px; overflow: hidden; }
+
+.audit-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(38,38,38,0.5);
+  transition: background 0.2s;
+}
+.audit-row:hover { background: rgba(0,240,255,0.02); }
+.audit-row:last-child { border-bottom: none; }
+.audit-icon {
+  width: 32px; height: 32px; border-radius: 2px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.audit-icon svg { width: 16px; height: 16px; }
+.audit-icon.pass { background: rgba(78,222,163,0.1); border: 1px solid rgba(78,222,163,0.2); }
+.audit-icon.pass svg { fill: var(--emerald); }
+.audit-icon.fail { background: rgba(255,69,69,0.1); border: 1px solid rgba(255,69,69,0.2); }
+.audit-icon.fail svg { fill: var(--error-dim); }
+.audit-info { flex: 1; }
+.audit-name { font-size: 12px; font-weight: 600; color: var(--on-bg); margin-bottom: 2px; }
+.audit-meta { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--on-surface); }
+.audit-reading { font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; }
+.audit-reading .val { font-weight: 700; }
+.audit-reading .lim { font-size: 9px; color: var(--on-surface); margin-top: 2px; }
+.audit-explanation { font-size: 10px; color: var(--on-surface); line-height: 1.5; margin-top: 4px; padding: 6px 8px; background: rgba(255,69,69,0.05); border-left: 2px solid var(--error-dim); border-radius: 0 2px 2px 0; }
+.resolve-btn {
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid var(--emerald);
+  border-radius: 2px;
+  color: var(--emerald);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.resolve-btn:hover { background: rgba(78,222,163,0.1); }
+
+/* ── Loading Spinner ──────────────────────── */
+.spin {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Animated background grid lines ──────── */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+
+/* Content above bg-grid */
+.shell { position: relative; z-index: 1; }
+
+/* ── Floating atmosphere overlay ─────────── */
+.atm-overlay {
+  position: fixed;
+  bottom: 12px; right: 12px;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  pointer-events: none; opacity: 0.4; z-index: 0;
+}
+.atm-overlay p {
+  font-size: 9px; font-family: 'JetBrains Mono', monospace;
+  color: var(--primary-dim); text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+/* Quick access items */
+.qa-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(18,18,20,0.8);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.qa-item:hover { border-color: var(--primary-dim); background: rgba(0,240,255,0.04); }
+.qa-icon { width: 32px; height: 32px; border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.qa-icon svg { width: 14px; height: 14px; }
+.qa-item-title { font-size: 12px; font-weight: 600; color: var(--on-bg); }
+.qa-item-meta { font-size: 9px; font-family: 'JetBrains Mono', monospace; color: var(--on-surface); }
+.qa-arrow { margin-left: auto; fill: var(--on-surface); width: 14px; height: 14px; }
+</style>
+</head>
+<body>
+
+<!-- Background grid atmosphere -->
+<div class="bg-grid"></div>
+
+<!-- App Shell -->
+<div class="shell">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="sidebar">
+
+    <!-- Logo -->
+    <div class="brand">
+      <!-- Nexus Eye — Custom SVG Logo -->
+      <svg class="logo-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer hexagon ring -->
+        <polygon points="20,2 35,10.5 35,29.5 20,38 5,29.5 5,10.5" stroke="#00F0FF" stroke-width="1.2" fill="none" opacity="0.6"/>
+        <!-- Inner diamond -->
+        <polygon points="20,7 30,18 20,33 10,18" stroke="#00DBE9" stroke-width="1" fill="none" opacity="0.8"/>
+        <!-- Neural circuit lines -->
+        <line x1="20" y1="7" x2="20" y2="13" stroke="#00F0FF" stroke-width="1.5"/>
+        <line x1="30" y1="18" x2="26" y2="18" stroke="#00F0FF" stroke-width="1.5"/>
+        <line x1="10" y1="18" x2="14" y2="18" stroke="#00F0FF" stroke-width="1.5"/>
+        <line x1="20" y1="33" x2="20" y2="27" stroke="#00F0FF" stroke-width="1.5"/>
+        <!-- Central eye iris -->
+        <circle cx="20" cy="18" r="5" stroke="#00F0FF" stroke-width="1.2" fill="rgba(0,240,255,0.08)"/>
+        <!-- Pupil / core dot -->
+        <circle cx="20" cy="18" r="2" fill="#00F0FF" opacity="0.9"/>
+        <!-- Glow pulse ring -->
+        <circle cx="20" cy="18" r="7" stroke="#00DBE9" stroke-width="0.6" stroke-dasharray="2 3" fill="none" opacity="0.5">
+          <animateTransform attributeName="transform" type="rotate" from="0 20 18" to="360 20 18" dur="8s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Corner nodes -->
+        <circle cx="20" cy="4"  r="1.5" fill="#00F0FF" opacity="0.7"/>
+        <circle cx="34" cy="11" r="1.5" fill="#00F0FF" opacity="0.5"/>
+        <circle cx="34" cy="29" r="1.5" fill="#00F0FF" opacity="0.5"/>
+        <circle cx="20" cy="36" r="1.5" fill="#00F0FF" opacity="0.7"/>
+        <circle cx="6"  cy="29" r="1.5" fill="#00F0FF" opacity="0.5"/>
+        <circle cx="6"  cy="11" r="1.5" fill="#00F0FF" opacity="0.5"/>
+      </svg>
+
+      <div class="brand-text">
+        <h1>BRAIN AI</h1>
+        <p>Ops Intelligence v2.0</p>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-section-label">Navigation</div>
+
+    <button class="nav-item active" data-tab="overview">
+      <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      Overview
+    </button>
+    <button class="nav-item" data-tab="copilot">
+      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+      AI Copilot
+    </button>
+    <button class="nav-item" data-tab="graph">
+      <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14M22 4L12 14.01l-3-3"/></svg>
+      Knowledge Graph
+    </button>
+    <button class="nav-item" data-tab="rca">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+      RCA Workbench
+    </button>
+    <button class="nav-item" data-tab="compliance">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+      Compliance
+    </button>
+
+    <div style="flex:1"></div>
+
+    <!-- Operator -->
+    <div class="sidebar-footer">
+      <div class="operator-dot"></div>
+      <div class="operator-info">
+        <p>OPERATOR_01</p>
+        <span>Status: Online</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════ MAIN ═══════ -->
+  <main class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-crumb">
+          BRAIN AI / <span id="active-crumb">Overview Dashboard</span>
+        </div>
+        <div class="status-chip online">
+          <div class="status-led"></div>
+          Neural Core Online
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-bar">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          <input type="text" placeholder="Neural Query...">
+        </div>
+        <button class="icon-btn" title="Notifications">
+          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+        </button>
+        <button class="icon-btn" title="Terminal">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-7 3l-1.5 1.5L13 10l-1.5 1.5 1.5 1.5-1.5 1.5L9.5 13 11 11.5 9.5 10 11 8.5l1.5-1.5zm5 9h-4v-2h4v2z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ══ TAB: OVERVIEW ══════════════════════════════ -->
+    <div class="tab-content active" id="tab-overview">
+      <div class="page-scroll">
+
+        <!-- HERO -->
+        <div class="hero-panel">
+          <!-- WebGL background shader -->
+          <canvas id="hero-canvas"></canvas>
+
+          <!-- Three.js animated brain -->
+          <div id="hero-threejs"></div>
+
+          <!-- Overlays -->
+          <div class="hero-fade"></div>
+          <div class="hero-fade-bottom"></div>
+
+          <!-- Content -->
+          <div class="hero-content">
+            <div class="hero-tag">
+              <div class="led"></div>
+              <span>Neural Core Online · TF-IDF + RAG Active</span>
+            </div>
+            <h2 class="hero-title">
+              Industrial Knowledge<br>
+              <em>Intelligence Engine</em>
+            </h2>
+            <p class="hero-sub">
+              Processing plant documentation through hallucination-gated RAG, dynamic knowledge graphs, and automated 5-Whys root cause analysis. Zero fabricated answers.
+            </p>
+            <div class="hero-actions">
+              <button class="btn-primary" onclick="showTab('copilot')">
+                <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Launch Copilot
+              </button>
+              <button class="btn-ghost" onclick="showTab('graph')">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                Explore Graph
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Row -->
+        <div class="kpi-grid">
+          <div class="kpi-card cyan">
+            <div class="kpi-label">RAG Grounding Integrity</div>
+            <div class="kpi-value">99.8%</div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:99.8%"></div></div>
+          </div>
+          <div class="kpi-card emerald">
+            <div class="kpi-label">Corpus Documents</div>
+            <div class="kpi-value">7</div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%"></div></div>
+          </div>
+          <div class="kpi-card amber">
+            <div class="kpi-label">Compliance Alert Level</div>
+            <div class="kpi-value" id="compliance-level">CRIT_04</div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:45%"></div></div>
+          </div>
+          <div class="kpi-card error">
+            <div class="kpi-label">RCA Latency</div>
+            <div class="kpi-value">&lt;3s</div>
+            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:20%"></div></div>
+          </div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="col-grid col-grid-5-7">
+
+          <!-- Quick Access -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">
+                <svg viewBox="0 0 24 24"><path d="M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.72L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z"/></svg>
+                Plant Intelligence
+              </div>
+            </div>
+            <div class="section-body" style="display:flex;flex-direction:column;gap:8px;">
+              <div class="qa-item" onclick="showTab('rca');setTimeout(()=>document.getElementById('rca-desc').value='Centrifugal pump PMP-302 completely seized during startup with heavy smoke from coupling end.',100)">
+                <div class="qa-icon" style="background:rgba(255,69,69,0.1);border:1px solid rgba(255,69,69,0.2)">
+                  <svg viewBox="0 0 24 24" style="fill:#FF4545"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                </div>
+                <div>
+                  <div class="qa-item-title">Analyse Pump Seizure</div>
+                  <div class="qa-item-meta">Asset: PMP-302 · Last event 14:02</div>
+                </div>
+                <svg class="qa-arrow" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              </div>
+              <div class="qa-item" onclick="showTab('rca');setTimeout(()=>document.getElementById('rca-desc').value='Boiler B-401 experienced a fuel gas pressure surge leading to emergency manual trip.',100)">
+                <div class="qa-icon" style="background:rgba(234,195,36,0.1);border:1px solid rgba(234,195,36,0.2)">
+                  <svg viewBox="0 0 24 24" style="fill:#EAC324"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-5h2v2h-2v-2zm0-8h2v6h-2V7z"/></svg>
+                </div>
+                <div>
+                  <div class="qa-item-title">Diagnose Pressure Surge</div>
+                  <div class="qa-item-meta">Asset: B-401 · Sensor PRV-802</div>
+                </div>
+                <svg class="qa-arrow" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              </div>
+              <div class="qa-item" onclick="showTab('compliance')">
+                <div class="qa-icon" style="background:rgba(78,222,163,0.1);border:1px solid rgba(78,222,163,0.2)">
+                  <svg viewBox="0 0 24 24" style="fill:#4EDEA3"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                </div>
+                <div>
+                  <div class="qa-item-title">Inspect OISD-189 Deviations</div>
+                  <div class="qa-item-meta">4 active violations detected</div>
+                </div>
+                <svg class="qa-arrow" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- System Logs Terminal -->
+          <div>
+            <div class="terminal" style="height:280px;">
+              <div class="terminal-bar">
+                <div class="terminal-dot" style="background:rgba(255,69,69,0.5)"></div>
+                <div class="terminal-dot" style="background:rgba(234,195,36,0.5)"></div>
+                <div class="terminal-dot" style="background:rgba(78,222,163,0.5)"></div>
+                <span class="terminal-label">SYSTEM_LOGS://ROOT</span>
+              </div>
+              <div class="terminal-body" id="sys-terminal">
+                <p class="t-cyan">[SYSTEM] Initializing BRAIN AI kernel v2.0.4...</p>
+                <p class="t-dim">[INFO] Loading neural grounding modules (RAG-Enabled)</p>
+                <p class="t-green">[SUCCESS] Asset stream verified · 7 documents indexed</p>
+                <p class="t-dim">[INFO] TF-IDF index compiled · IDF weights applied</p>
+                <p class="t-amber">[WARN] Compliance scan: 4 OISD-189 violations detected</p>
+                <p class="t-cyan">[SYSTEM] Knowledge graph loaded · 17 nodes · 14 edges</p>
+                <p class="t-dim">_</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ TAB: COPILOT ═══════════════════════════════ -->
+    <div class="tab-content" id="tab-copilot">
+      <div class="copilot-layout">
+
+        <!-- Chat Panel -->
+        <div class="chat-panel">
+          <div class="section-header" style="border-radius:4px 4px 0 0;">
+            <div class="section-title">
+              <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+              Grounded RAG Copilot
+            </div>
+            <div class="status-chip online"><div class="status-led"></div>TF-IDF + Self-Gate Active</div>
+          </div>
+
+          <div class="chat-messages" id="chat-messages">
+            <!-- Welcome -->
+            <div class="msg ai">
+              <div class="msg-avatar">🧠</div>
+              <div class="msg-body">
+                <div class="msg-role">BRAIN AI</div>
+                <div class="msg-text">
+                  Welcome to the <strong>Grounded RAG Copilot</strong>. I answer only from verified industrial documentation. I will explicitly refuse if the corpus does not contain the requested fact — no hallucinations.
+                  <br><br>Ask me about <strong>PMP-302</strong>, <strong>Boiler B-401</strong>, <strong>Compressor C-102</strong>, or <strong>OISD-189 fire safety standards</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-area">
+            <textarea class="chat-input" id="copilot-input" rows="2" placeholder="Ask about assets, SOPs, safety standards..."></textarea>
+            <button class="btn-primary" id="copilot-send" style="height:42px;white-space:nowrap">
+              <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              Send
+            </button>
+          </div>
+        </div>
+
+        <!-- Context Panel -->
+        <div class="context-panel">
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">Sample Queries</div>
+            </div>
+            <div class="section-body" style="display:flex;flex-direction:column;gap:6px;">
+              <button class="sample-q" onclick="fillQuery(this.textContent)">What is the vibration limit for Pump PMP-302?</button>
+              <button class="sample-q" onclick="fillQuery(this.textContent)">What was the cause of the PMP-302 shaft seizure?</button>
+              <button class="sample-q" onclick="fillQuery(this.textContent)">What are the pre-startup purging steps for Boiler B-401?</button>
+              <button class="sample-q" onclick="fillQuery(this.textContent)">What is the OISD-189 requirement for fire water pump testing?</button>
+              <button class="sample-q" onclick="fillQuery(this.textContent)">What deficiencies were found in Compressor C-102?</button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-header"><div class="section-title">Indexed Corpus</div></div>
+            <div class="section-body" style="display:flex;flex-direction:column;gap:4px;">
+              <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;display:flex;justify-content:space-between;">
+                <span style="font-family:'JetBrains Mono',monospace;color:var(--primary-dim)">pmp302_manual.txt</span>
+                <span style="color:var(--on-surface)">OEM Manual</span>
+              </div>
+              <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;display:flex;justify-content:space-between;">
+                <span style="font-family:'JetBrains Mono',monospace;color:var(--primary-dim)">pmp302_workorders.txt</span>
+                <span style="color:var(--on-surface)">Work Orders</span>
+              </div>
+              <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;display:flex;justify-content:space-between;">
+                <span style="font-family:'JetBrains Mono',monospace;color:var(--primary-dim)">b401_sop.txt</span>
+                <span style="color:var(--on-surface)">SOP</span>
+              </div>
+              <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;display:flex;justify-content:space-between;">
+                <span style="font-family:'JetBrains Mono',monospace;color:var(--primary-dim)">b401_workorders.txt</span>
+                <span style="color:var(--on-surface)">Work Orders</span>
+              </div>
+              <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;display:flex;justify-content:space-between;">
+                <span style="font-family:'JetBrains Mono',monospace;color:var(--primary-dim)">c102_inspection.txt</span>
+                <span style="color:var(--on-surface)">Inspection</span>
+              </div>
+              <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;display:flex;justify-content:space-between;">
+                <span style="font-family:'JetBrains Mono',monospace;color:var(--primary-dim)">near_miss_incidents.txt</span>
+                <span style="color:var(--on-surface)">Incident Report</span>
+              </div>
+              <div style="padding:6px 0;font-size:10px;display:flex;justify-content:space-between;">
+                <span style="font-family:'JetBrains Mono',monospace;color:var(--primary-dim)">oisd_std_189.txt</span>
+                <span style="color:var(--on-surface)">Regulation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: GRAPH ═════════════════════════════════ -->
+    <div class="tab-content" id="tab-graph">
+      <div style="display:flex;flex-direction:column;height:100%;padding:20px;gap:12px;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div class="section-title" style="font-size:14px;color:var(--on-bg)">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--primary-dim)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            Knowledge Graph Explorer
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn-ghost" id="rebuild-graph" style="padding:6px 14px;font-size:10px">
+              <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+              Rebuild Graph
+            </button>
+            <div style="display:flex;gap:10px;font-size:10px;font-family:'JetBrains Mono',monospace;">
+              <span style="color:var(--primary-dim)">● Equipment</span>
+              <span style="color:#c084fc">● Standard</span>
+              <span style="color:#fb923c">● Incident</span>
+              <span style="color:var(--emerald)">● Person</span>
+              <span style="color:var(--amber)">● Document</span>
+            </div>
+          </div>
+        </div>
+        <div id="graph-mount" style="flex:1;min-height:0;">
+          <div id="graph-canvas" style="width:100%;height:100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: RCA ════════════════════════════════════ -->
+    <div class="tab-content" id="tab-rca">
+      <div class="rca-layout">
+
+        <!-- Input Panel -->
+        <div class="rca-input-panel">
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                RCA Workbench
+              </div>
+            </div>
+            <div class="section-body" style="display:flex;flex-direction:column;gap:10px;">
+              <label style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--on-surface);text-transform:uppercase;letter-spacing:0.08em;">Incident Description</label>
+              <textarea class="rca-textarea" id="rca-desc" placeholder="Describe the equipment failure or incident...">Centrifugal pump PMP-302 completely seized during startup with heavy smoke from the coupling end.</textarea>
+              <label style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--on-surface);text-transform:uppercase;letter-spacing:0.08em;">Asset ID (Optional)</label>
+              <input type="text" id="rca-asset" value="PMP-302" style="background:var(--surface-1);border:1px solid var(--border);border-radius:4px;padding:8px 12px;color:var(--on-bg);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;width:100%;">
+              <button class="btn-primary" id="rca-btn" onclick="runRCA()">
+                <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Generate RCA
+              </button>
+              <div class="spin" id="rca-spin"></div>
+            </div>
+          </div>
+
+          <!-- Preset Examples -->
+          <div class="section-card">
+            <div class="section-header"><div class="section-title">Preset Scenarios</div></div>
+            <div class="section-body" style="display:flex;flex-direction:column;gap:6px;">
+              <button class="sample-q" onclick="setRCA('Centrifugal pump PMP-302 completely seized during startup with heavy smoke from the coupling end.','PMP-302')">PMP-302 Pump Seizure</button>
+              <button class="sample-q" onclick="setRCA('Boiler B-401 experienced a fuel gas pressure surge leading to manual emergency trip.','B-401')">B-401 Fuel Gas Surge</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="rca-results" id="rca-results-panel">
+          <div class="section-card" style="display:flex;flex-direction:column;height:100%">
+            <div class="section-header">
+              <div class="section-title">
+                <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+                Analysis Results
+              </div>
+            </div>
+            <div class="section-body" style="flex:1;overflow-y:auto;" id="rca-output">
+              <p style="color:var(--on-surface);font-size:12px;text-align:center;padding:40px 0;">Submit an incident description to generate a 5-Whys analysis and Fishbone diagram.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: COMPLIANCE ════════════════════════════ -->
+    <div class="tab-content" id="tab-compliance">
+      <div class="compliance-layout">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div class="section-title" style="font-size:14px;color:var(--on-bg)">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--primary-dim)"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            OISD-STD-189 Safety Compliance Audit
+          </div>
+          <button class="btn-ghost" id="run-audit-btn" onclick="runCompliance()" style="padding:6px 14px;font-size:10px">
+            <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            Re-Run Audit
+          </button>
+        </div>
+
+        <!-- Summary chips -->
+        <div style="display:flex;gap:10px;" id="compliance-summary">
+          <div class="status-chip online"><div class="status-led"></div>Loading audit...</div>
+        </div>
+
+        <!-- Audit table -->
+        <div class="section-card" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+          <div class="section-header">
+            <div class="section-title">Rule Matrix</div>
+            <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--on-surface)">OISD-STD-189 · Simulated Telemetry · 2026-07-21</span>
+          </div>
+          <div style="overflow-y:auto;flex:1" id="audit-rows">
+            <div style="padding:40px;text-align:center;color:var(--on-surface);font-size:12px;">Loading compliance data...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Atmosphere overlay -->
+<div class="atm-overlay">
+  <p>Grounding ID: G-8892-A</p>
+  <p>Shard: IN-SOUTH-CORE</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════ -->
+<script>
+
+/* ── Tab Navigation ───────────────────────── */
+const crumbMap = {
+  overview: 'Overview Dashboard',
+  copilot:  'AI RAG Copilot',
+  graph:    'Knowledge Graph Explorer',
+  rca:      'RCA Workbench',
+  compliance: 'Safety Compliance Audit'
+};
+
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelector(`[data-tab="${name}"]`).classList.add('active');
+  document.getElementById('active-crumb').textContent = crumbMap[name];
+  if (name === 'graph') initGraph();
+  if (name === 'compliance') runCompliance();
+}
+
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => showTab(btn.dataset.tab));
+});
+
+
+/* ── Hero: WebGL Shader Background ─────────── */
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  function resize() {
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const vs = `attribute vec2 a_pos; varying vec2 v_uv;
+  void main() { v_uv = a_pos * .5 + .5; gl_Position = vec4(a_pos,0,1); }`;
+  const fs = `precision highp float;
+  varying vec2 v_uv; uniform float u_t; uniform vec2 u_res;
+  void main() {
+    vec2 uv = v_uv;
+    float n = sin(uv.x*12.+u_t*.6)*sin(uv.y*10.+u_t*.5);
+    n += sin(uv.x*22.-u_t)*cos(uv.y*16.+u_t*.9)*.5;
+    vec3 c1 = vec3(.01,.01,.015);
+    vec3 c2 = vec3(0.,.05,.07);
+    vec3 acc= vec3(0.,.94,1.);
+    vec3 col= mix(c1,c2,n*.5+.5);
+    float sl = sin(uv.y*500.+u_t*2.)*.015;
+    col += sl;
+    float par=0.;
+    for(int i=0;i<6;i++){
+      float fi=float(i);
+      vec2 p=vec2(fract(sin(fi*123.45)+u_t*.018),fract(cos(fi*543.21)+u_t*.04));
+      float d=distance(uv,p); par+=(0.0008/d)*abs(sin(u_t+fi));
+    }
+    col += acc*par;
+    gl_FragColor = vec4(col,1.);
+  }`;
+
+  function mkShader(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s); return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+  const uT  = gl.getUniformLocation(prog, 'u_t');
+  const uR  = gl.getUniformLocation(prog, 'u_res');
+
+  function draw(t) {
+    resize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform1f(uT, t * .001);
+    gl.uniform2f(uR, canvas.width, canvas.height);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+
+/* ── Hero: Three.js Brain ─────────────────── */
+(function() {
+  const container = document.getElementById('hero-threejs');
+  if (!container || typeof THREE === 'undefined') return;
+
+  const scene    = new THREE.Scene();
+  const w = container.clientWidth  || 600;
+  const h = container.clientHeight || 360;
+  const camera   = new THREE.PerspectiveCamera(65, w / h, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(w, h);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(renderer.domElement);
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // Core icosahedron wireframe
+  const coreGeo = new THREE.IcosahedronGeometry(1.6, 2);
+  const coreMat = new THREE.MeshPhongMaterial({
+    color: 0x00f0ff, emissive: 0x00f0ff, emissiveIntensity: 0.4,
+    wireframe: true, transparent: true, opacity: 0.75
+  });
+  group.add(new THREE.Mesh(coreGeo, coreMat));
+
+  // Outer shell
+  const outerMat = new THREE.MeshPhongMaterial({
+    color: 0x00dbe9, emissive: 0x004f54, wireframe: true,
+    transparent: true, opacity: 0.2
+  });
+  group.add(new THREE.Mesh(new THREE.IcosahedronGeometry(2.2, 1), outerMat));
+
+  // Data rings
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.25 });
+  for (let i = 0; i < 3; i++) {
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(2.4 + i*.15, 0.015, 12, 80), ringMat);
+    ring.rotation.x = Math.random() * Math.PI;
+    ring.rotation.y = Math.random() * Math.PI;
+    ring.userData.speed = 0.003 + i * 0.002;
+    ring.userData.axis  = new THREE.Vector3(Math.random(), Math.random(), Math.random()).normalize();
+    group.add(ring);
+  }
+
+  // Particles
+  const pGeo = new THREE.BufferGeometry();
+  const pArr = new Float32Array(600 * 3);
+  for (let i = 0; i < pArr.length; i++) pArr[i] = (Math.random() - .5) * 12;
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pArr, 3));
+  const pMesh = new THREE.Points(pGeo, new THREE.PointsMaterial({
+    size: 0.025, color: 0x00f0ff, transparent: true, opacity: 0.45
+  }));
+  scene.add(pMesh);
+
+  scene.add(new THREE.AmbientLight(0x404040, 1));
+  const ptLight = new THREE.PointLight(0x00f0ff, 3, 15);
+  ptLight.position.set(3, 3, 3);
+  scene.add(ptLight);
+
+  camera.position.set(0, 0, 6);
+
+  let mouseX = 0, mouseY = 0;
+  container.addEventListener('mousemove', e => {
+    const r = container.getBoundingClientRect();
+    mouseX = ((e.clientX - r.left) / r.width  - .5) * 2;
+    mouseY = ((e.clientY - r.top)  / r.height - .5) * 2;
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = Date.now() * .001;
+
+    group.rotation.y += 0.004;
+    group.rotation.z += 0.001;
+    group.rotation.x += (mouseY * .5 - group.rotation.x) * .05;
+
+    const pulse = Math.sin(t * 2) * .05 + 1;
+    group.children[0].scale.setScalar(pulse);
+
+    group.children.slice(2).forEach(ring => {
+      ring.rotateOnAxis(ring.userData.axis, ring.userData.speed);
+    });
+
+    pMesh.rotation.y += .0008;
+    ptLight.position.x = Math.sin(t) * 4;
+    ptLight.position.y = Math.cos(t * .7) * 4;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    const nw = container.clientWidth, nh = container.clientHeight;
+    camera.aspect = nw / nh;
+    camera.updateProjectionMatrix();
+    renderer.setSize(nw, nh);
+  });
+})();
+
+
+/* ── Copilot ──────────────────────────────── */
+function fillQuery(text) {
+  document.getElementById('copilot-input').value = text;
+  showTab('copilot');
+}
+
+function appendMsg(role, html, citations) {
+  const wrap = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const avatar = role === 'user' ? 'YOU' : '🧠';
+  const roleLabel = role === 'user' ? 'OPERATOR_01' : 'BRAIN AI';
+  let citeHtml = '';
+  if (citations && citations.length) {
+    citeHtml = citations.map(c => `<span class="citation-chip">📄 ${c.doc_id}</span>`).join('');
+    citeHtml = `<div style="margin-top:8px">${citeHtml}</div>`;
+  }
+  div.innerHTML = `
+    <div class="msg-avatar">${avatar}</div>
+    <div class="msg-body">
+      <div class="msg-role">${roleLabel}</div>
+      <div class="msg-text">${html}${citeHtml}</div>
+    </div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+document.getElementById('copilot-send').addEventListener('click', sendCopilot);
+document.getElementById('copilot-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendCopilot(); }
+});
+
+async function sendCopilot() {
+  const inp = document.getElementById('copilot-input');
+  const q = inp.value.trim();
+  if (!q) return;
+  inp.value = '';
+  appendMsg('user', q, null);
+  appendMsg('ai', '<em style="color:var(--on-surface)">Retrieving from corpus...</em>', null);
+  const msgs = document.getElementById('chat-messages');
+  const thinking = msgs.lastChild;
+
+  try {
+    const r = await fetch('/api/copilot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: q })
+    });
+    const d = await r.json();
+    thinking.remove();
+
+    let confBadge = '';
+    if (d.confidence !== undefined) {
+      const col = d.confidence > 60 ? 'var(--emerald)' : d.confidence > 30 ? 'var(--amber)' : 'var(--error-dim)';
+      confBadge = `<span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${col};background:rgba(0,0,0,.3);padding:2px 6px;border-radius:2px;float:right">Confidence: ${d.confidence}%</span>`;
+    }
+    appendMsg('ai', confBadge + (d.answer || 'No answer returned.'), d.citations || []);
+  } catch (e) {
+    thinking.remove();
+    appendMsg('ai', '⚠️ Could not reach the server. Is the backend running?', []);
+  }
+}
+
+
+/* ── Knowledge Graph ──────────────────────── */
+let graphInited = false;
+
+async function initGraph() {
+  if (graphInited) return;
+  graphInited = true;
+
+  const mount = document.getElementById('graph-canvas');
+  mount.innerHTML = '<p style="color:var(--on-surface);padding:40px;font-size:12px;text-align:center">Loading knowledge graph...</p>';
+
+  try {
+    const r = await fetch('/api/ingest');
+    const d = await r.json();
+    drawGraph(mount, d);
+  } catch (e) {
+    mount.innerHTML = '<p style="color:var(--error-dim);padding:40px;font-size:12px;text-align:center">Failed to load graph data.</p>';
+  }
+}
+
+document.getElementById('rebuild-graph').addEventListener('click', async () => {
+  graphInited = false;
+  document.getElementById('graph-canvas').innerHTML = '<p style="color:var(--on-surface);padding:40px;font-size:12px;text-align:center">Rebuilding graph from corpus...</p>';
+  try {
+    await fetch('/api/ingest/rebuild', { method: 'POST' });
+    initGraph();
+  } catch (e) {}
+});
+
+function drawGraph(mount, data) {
+  mount.innerHTML = '';
+  const W = mount.clientWidth, H = mount.clientHeight;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', W); svg.setAttribute('height', H);
+  svg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  mount.style.position = 'relative';
+  mount.appendChild(svg);
+
+  const typeColor = {
+    Equipment: '#00DBE9', Standard: '#c084fc', Incident: '#fb923c',
+    Person: '#4EDEA3', Document: '#EAC324', Procedure: '#60a5fa'
+  };
+
+  const nodes = data.nodes || [];
+  const edges = data.edges || [];
+  const nodeMap = {};
+
+  // Simple force-like layout
+  nodes.forEach((n, i) => {
+    const angle = (i / nodes.length) * Math.PI * 2;
+    const radius = 140 + Math.random() * 80;
+    n._x = W/2 + Math.cos(angle) * radius;
+    n._y = H/2 + Math.sin(angle) * radius;
+    nodeMap[n.id] = n;
+  });
+
+  // Draw edges
+  edges.forEach(e => {
+    const s = nodeMap[e.source], t = nodeMap[e.target];
+    if (!s || !t) return;
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', s._x); line.setAttribute('y1', s._y);
+    line.setAttribute('x2', t._x); line.setAttribute('y2', t._y);
+    line.setAttribute('stroke', 'rgba(59,73,75,0.6)');
+    line.setAttribute('stroke-width', '1');
+    svg.appendChild(line);
+
+    // Edge label
+    const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    lbl.setAttribute('x', (s._x + t._x) / 2);
+    lbl.setAttribute('y', (s._y + t._y) / 2 - 3);
+    lbl.setAttribute('fill', '#849495'); lbl.setAttribute('font-size', '8');
+    lbl.setAttribute('font-family', 'JetBrains Mono, monospace');
+    lbl.setAttribute('text-anchor', 'middle');
+    lbl.textContent = e.relation;
+    svg.appendChild(lbl);
+  });
+
+  // Draw nodes
+  nodes.forEach(n => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('transform', `translate(${n._x},${n._y})`);
+    g.style.cursor = 'pointer';
+
+    const col = typeColor[n.type] || '#849495';
+
+    const circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circ.setAttribute('r', '10');
+    circ.setAttribute('fill', col + '20');
+    circ.setAttribute('stroke', col);
+    circ.setAttribute('stroke-width', '1.5');
+    g.appendChild(circ);
+
+    const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    lbl.setAttribute('y', '22');
+    lbl.setAttribute('fill', '#e5e2e3'); lbl.setAttribute('font-size', '9');
+    lbl.setAttribute('font-family', 'Inter, sans-serif');
+    lbl.setAttribute('text-anchor', 'middle');
+    lbl.setAttribute('font-weight', '600');
+    lbl.textContent = n.label.length > 20 ? n.label.slice(0, 18) + '…' : n.label;
+    g.appendChild(lbl);
+
+    // Hover glow
+    g.addEventListener('mouseenter', () => circ.setAttribute('stroke-width', '2.5'));
+    g.addEventListener('mouseleave', () => circ.setAttribute('stroke-width', '1.5'));
+
+    svg.appendChild(g);
+  });
+}
+
+
+/* ── RCA ──────────────────────────────────── */
+function setRCA(desc, asset) {
+  document.getElementById('rca-desc').value = desc;
+  document.getElementById('rca-asset').value = asset;
+}
+
+async function runRCA() {
+  const desc  = document.getElementById('rca-desc').value.trim();
+  const asset = document.getElementById('rca-asset').value.trim();
+  if (!desc) return;
+
+  const out  = document.getElementById('rca-output');
+  const spin = document.getElementById('rca-spin');
+  out.innerHTML = '<p style="color:var(--on-surface);font-size:12px;text-align:center;padding:20px">Synthesising root cause analysis...</p>';
+  spin.style.display = 'block';
+
+  try {
+    const r = await fetch('/api/rca', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ incidentDescription: desc, assetId: asset })
+    });
+    const d = await r.json();
+    spin.style.display = 'none';
+    renderRCA(out, d);
+  } catch (e) {
+    spin.style.display = 'none';
+    out.innerHTML = '<p style="color:var(--error-dim);font-size:12px;padding:20px">Server error — is the backend running?</p>';
+  }
+}
+
+function renderRCA(el, d) {
+  const fishData = {
+    Machine:     d.fishbone?.Machine     || d.fishbone?.machine     || [],
+    Method:      d.fishbone?.Method      || d.fishbone?.method      || [],
+    Material:    d.fishbone?.Material    || d.fishbone?.material    || [],
+    Manpower:    d.fishbone?.Manpower    || d.fishbone?.manpower    || [],
+    Measurement: d.fishbone?.Measurement || d.fishbone?.measurement || [],
+    Environment: d.fishbone?.Environment || d.fishbone?.environment || [],
+  };
+
+  // Staggered junctions along central spine Y=240 for alternating 6M bones
+  const catMeta = {
+    Manpower:    { col: '#c084fc', icon: '👷', x: 40,  top: false, cx: 145, jx: 160 },
+    Machine:     { col: '#00DBE9', icon: '⚙️', x: 40,  top: true,  cx: 145, jx: 230 },
+    Measurement: { col: '#60a5fa', icon: '📏', x: 280, top: false, cx: 385, jx: 400 },
+    Method:      { col: '#4EDEA3', icon: '📋', x: 280, top: true,  cx: 385, jx: 470 },
+    Environment: { col: '#fb923c', icon: '🌱', x: 520, top: false, cx: 625, jx: 640 },
+    Material:    { col: '#EAC324', icon: '📦', x: 520, top: true,  cx: 625, jx: 710 },
+  };
+
+  const whysHtml = (d.whys || []).map((w, i) => `
+    <div class="why-item">
+      <div class="why-num">WHY ${i+1}</div>
+      <div class="why-text">${w}</div>
+    </div>`).join('');
+
+  let cardsHtml = '';
+  let ribsHtml = '';
+  let dotsHtml = '';
+
+  Object.entries(catMeta).forEach(([cat, m]) => {
+    const items = fishData[cat] || [];
+    const causesHtml = items.length
+      ? items.map(it => `<li class="fb-card-item" style="color:var(--on-surface)">${it}</li>`).join('')
+      : `<li class="fb-card-item" style="color:var(--on-surface);opacity:0.4;font-style:italic">No critical factors</li>`;
+
+    const cardY = m.top ? 15 : 305;
+    const ancY  = m.top ? 175 : 305;
+
+    // Rib line connecting card to staggered spine junction
+    ribsHtml += `
+      <line x1="${m.cx}" y1="${ancY}" x2="${m.jx}" y2="240" stroke="${m.col}" stroke-width="2.5" stroke-linecap="round" opacity="0.9" />
+    `;
+
+    // Junction dot on spine
+    dotsHtml += `
+      <circle cx="${m.jx}" cy="240" r="5" fill="${m.col}" stroke="#0A0A0B" stroke-width="1.5" />
+      <circle cx="${m.jx}" cy="240" r="8" fill="${m.col}" opacity="0.25" />
+    `;
+
+    // ForeignObject card
+    cardsHtml += `
+      <foreignObject x="${m.x}" y="${cardY}" width="210" height="160">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="fb-card-html" style="border-top: 3px solid ${m.col};">
+          <div class="fb-card-hdr" style="color:${m.col}">
+            <span>${m.icon}</span>
+            <span>${cat.toUpperCase()}</span>
+          </div>
+          <ul class="fb-card-list">${causesHtml}</ul>
+        </div>
+      </foreignObject>
+    `;
+  });
+
+  const rootText = d.root_cause || 'Equipment Failure';
+
+  el.innerHTML = `
+    <div style="margin-bottom:16px;">
+      <div style="font-size:9px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--on-surface);margin-bottom:8px;">Root Cause Diagnosis</div>
+      <div style="background:rgba(0,240,255,0.04);border:1px solid rgba(0,240,255,0.15);border-left:3px solid var(--primary);border-radius:4px;padding:12px 14px;font-size:12px;color:var(--on-bg);line-height:1.6;font-weight:500;">${rootText}</div>
+    </div>
+    
+    <div style="font-size:9px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--on-surface);margin-bottom:8px;">5-Whys Causal Chain</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:24px;">${whysHtml}</div>
+    
+    <div style="font-size:9px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--on-surface);margin-bottom:10px;">Ishikawa 6M Fishbone Diagram</div>
+    <div style="width:100%;overflow-x:auto;padding-bottom:10px;">
+      <svg viewBox="0 0 960 480" width="100%" height="480" style="background:rgba(10,10,11,0.85);border:1px solid var(--border);border-radius:6px;min-width:750px;display:block;">
+        
+        <!-- Cards Layer -->
+        ${cardsHtml}
+
+        <!-- Angled Ribs Layer -->
+        ${ribsHtml}
+
+        <!-- Central Main Spine Line -->
+        <line x1="20" y1="240" x2="770" y2="240" stroke="#00F0FF" stroke-width="4" stroke-linecap="round" />
+        <polygon points="765,232 785,240 765,248" fill="#00F0FF" />
+
+        <!-- Spine Junction Dots Layer -->
+        ${dotsHtml}
+
+        <!-- Root Cause Head Box -->
+        <foreignObject x="790" y="195" width="155" height="90">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="fb-head-box">
+            <div class="fb-head-title">INCIDENT / EFFECT</div>
+            <div class="fb-head-text">${rootText}</div>
+          </div>
+        </foreignObject>
+      </svg>
+    </div>
+  `;
+}
+
+
+/* ── Compliance ───────────────────────────── */
+async function runCompliance() {
+  const rowsEl = document.getElementById('audit-rows');
+  const sumEl  = document.getElementById('compliance-summary');
+  rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--on-surface);font-size:12px;">Running OISD-189 audit checks...</div>';
+
+  try {
+    const r = await fetch('/api/compliance');
+    const d = await r.json();
+    renderCompliance(rowsEl, sumEl, d);
+  } catch (e) {
+    rowsEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--error-dim);font-size:12px;">Server error — check backend.</div>';
+  }
+}
+
+function renderCompliance(rowsEl, sumEl, d) {
+  const results = d.results || [];
+  const passed  = results.filter(r => r.passed).length;
+  const failed  = results.length - passed;
+
+  sumEl.innerHTML = `
+    <div class="status-chip" style="background:rgba(78,222,163,.1);color:var(--emerald);border:1px solid rgba(78,222,163,.3)">
+      <div class="status-led" style="background:var(--emerald)"></div>${passed} PASSING
+    </div>
+    <div class="status-chip" style="background:rgba(255,69,69,.1);color:var(--error-dim);border:1px solid rgba(255,69,69,.3)">
+      <div class="status-led" style="background:var(--error-dim);animation:led-pulse 0.8s infinite"></div>${failed} VIOLATIONS
+    </div>`;
+
+  document.getElementById('compliance-level').textContent = failed > 0 ? `CRIT_0${failed}` : 'CLEAR';
+
+  rowsEl.innerHTML = results.map(rule => {
+    const passIcon = rule.passed
+      ? `<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`
+      : `<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`;
+    const statusClass = rule.passed ? 'pass' : 'fail';
+    const valColor = rule.passed ? 'var(--emerald)' : 'var(--error-dim)';
+    const explHtml = !rule.passed && rule.explanation
+      ? `<div class="audit-explanation">${rule.explanation}</div>` : '';
+    const resolveBtn = !rule.passed
+      ? `<button class="resolve-btn" onclick="resolveRule('${rule.id}')">Resolve</button>` : '';
+
+    return `<div class="audit-row">
+      <div class="audit-icon ${statusClass}">${passIcon}</div>
+      <div class="audit-info">
+        <div class="audit-name">${rule.name}</div>
+        <div class="audit-meta">${rule.standard} · Limit: ${rule.limit}</div>
+        ${explHtml}
+      </div>
+      <div class="audit-reading">
+        <div class="val" style="color:${valColor};font-family:'JetBrains Mono',monospace">${rule.reading}</div>
+        <div class="lim">Req: ${rule.limit}</div>
+      </div>
+      <div style="padding-left:12px">${resolveBtn}</div>
+    </div>`;
+  }).join('');
+}
+
+async function resolveRule(ruleId) {
+  try {
+    const r = await fetch('/api/compliance/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ruleId })
+    });
+    const d = await r.json();
+    renderCompliance(
+      document.getElementById('audit-rows'),
+      document.getElementById('compliance-summary'),
+      d
+    );
+  } catch (e) {}
+}
+
+
+/* ── System Log Terminal Ticker ───────────── */
+const tickerLines = [
+  { cls: 't-cyan',  txt: '[SYSTEM] Neural sync pulse transmitted...' },
+  { cls: 't-dim',   txt: '[INFO] TF-IDF retrieval scored 4 chunks' },
+  { cls: 't-green', txt: '[SUCCESS] Grounding gate passed · answer verified' },
+  { cls: 't-amber', txt: '[WARN] OISD-189 jockey pump pressure below 7.0 kg/cm²' },
+  { cls: 't-dim',   txt: '[INFO] Knowledge graph serving from cache' },
+  { cls: 't-red',   txt: '[ALERT] Compliance check: 4 violations detected' },
+  { cls: 't-cyan',  txt: '[SYSTEM] RCA synthesis engine ready' },
+  { cls: 't-green', txt: '[SUCCESS] Corpus index verified · 7 docs active' },
+];
+let tickIdx = 0;
+const termEl = document.getElementById('sys-terminal');
+setInterval(() => {
+  const p = document.createElement('p');
+  const ln = tickerLines[tickIdx % tickerLines.length];
+  p.className = ln.cls;
+  p.textContent = ln.txt;
+  termEl.appendChild(p);
+  termEl.scrollTop = termEl.scrollHeight;
+  tickIdx++;
+}, 2500);
+
+</script>
+</body>
+</html>

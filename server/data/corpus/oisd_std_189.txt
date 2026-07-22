@@ -1,0 +1,23 @@
+---
+doc_id: oisd_std_189
+title: Safety Standard Excerpt - OISD-STD-189
+type: regulation
+tags: [safety, regulation, fire, inspection, pump, testing]
+---
+Oil Industry Safety Directorate Standard (OISD-STD-189) - Fire Fighting Equipment.
+Section 6: Fire Water System Maintenance and Testing Protocols.
+
+6.1. System Readiness:
+The fire water piping network must be kept fully pressurized at all times under a pressure of not less than 7.0 kg/cm². The jockey pumps must be configured on automatic control to maintain this pressure.
+
+6.2. Fire Water Pump Testing:
+- Main fire water pumps (both diesel engine-driven and motor-driven) must be started and run for a minimum of 30 minutes at least once every 7 days (weekly test) to verify starter motor, fuel system, and discharge pressure.
+- During the weekly test, the pump discharge flow and pressure must be recorded.
+- The diesel storage tank level must be checked daily and maintained at no less than 90% capacity. The fuel quality must be tested quarterly for water and biological contamination.
+- The battery voltage for the diesel engine starters must be checked daily. A minimum voltage of 24V (for dual 12V batteries in series) is required.
+
+6.3. Hydrants and Monitors:
+- All fire hydrants, water monitors, and foam monitors must be inspected monthly for valve ease of operation and physical damages.
+- All fire hydrants must be flushed quarterly (every 90 days) to clear any silt or corrosion buildup from the headers.
+- Water spray systems installed on LPG storage vessels and process columns must be tested for deluge valve actuation and nozzle coverage area every 6 months.
+- Documentation: Any deviation in testing schedule or pressure readings must be logged and rectified within 48 hours. Deficiencies remaining unresolved for more than 7 days must be reported to the safety manager.

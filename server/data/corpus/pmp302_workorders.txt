@@ -1,0 +1,31 @@
+---
+doc_id: pmp302_workorders
+title: Work Order Log - Pump PMP-302
+type: log
+tags: [PMP-302, pump, maintenance, workorders, vibration, seal]
+---
+Maintenance History and Work Order Log for Centrifugal Pump PMP-302.
+
+Entry 1:
+- Work Order ID: WO-2025-0912
+- Date: 2025-09-12
+- Description: High bearing temperature and vibration reported.
+- Action Taken: Lubrication level was checked and found low. Topped up ISO VG 68 turbine oil in reservoir. Bearing temperature stabilized at 68°C. Vibration dropped to 3.8 mm/s.
+
+Entry 2:
+- Work Order ID: WO-2026-0210
+- Date: 2026-02-10
+- Description: Primary seal failure alarm. Buffer fluid level in API Plan 52 reservoir dropped from 80% to 20% in 48 hours.
+- Action Taken: Pump isolated. Primary mechanical seal was found cracked due to dry run friction. Replaced mechanical seal assembly with new cartridge seal. Flushed Plan 52 buffer tank and refilled with fresh glycol-water mixture.
+
+Entry 3:
+- Work Order ID: WO-2026-0615
+- Date: 2026-06-15
+- Description: Repeated vibration alarms. Pump vibration reached 5.8 mm/s. Seal buffer fluid level dropped to 50% over a week.
+- Action Taken: Replaced coupling elastomer. Re-checked alignment of pump and motor shaft; alignment was found within tolerance. Vibration reduced to 4.2 mm/s. No seal leaks observed.
+
+Entry 4:
+- Work Order ID: WO-2026-07-12
+- Date: 2026-07-12
+- Description: Complete pump seizure during startup. Heavy smoke observed from coupling end.
+- Action Taken: Disassembled pump casing. Shaft bearing at non-drive end was completely shattered. Mechanical seal faces were found heavily grooved and fractured. Debris from the shattered bearing had entered the seal chamber. Root cause identified as chronic lubrication failure combined with excessive radial load from bearing cage failure.
